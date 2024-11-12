@@ -17,6 +17,7 @@ metrics:
                 1: write
                 2: mkdir
                 3: unlink
+                4: fsync
         - name: bucket
           size: 1
           decoders:

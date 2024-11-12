@@ -12,6 +12,7 @@ enum fs_file_op {
     F_WRITE,
     F_MKDIR,
     F_UNLINK,
+    F_FSYNC,
 
     F_MAX
 };
@@ -66,7 +67,6 @@ static int probe_return(enum fs_file_op op)
 }
 
 // kprobe:ceph_read_iter
-
 SEC("kprobe/ceph_read_iter")
 int cephfs_read_enter()
 {
@@ -116,6 +116,19 @@ SEC("kretprobe/ceph_unlink")
 int cephfs_unlink_exit()
 {
     return probe_return(F_UNLINK);
+}
+
+// kprobe:ceph_fsync
+SEC("kprobe/ceph_fsync")
+int cephfs_fsync_enter()
+{
+    return probe_entry();
+}
+
+SEC("kretprobe/ceph_fsync")
+int cephfs_fsync_exit()
+{
+    return probe_return(F_FSYNC);
 }
 
 char LICENSE[] SEC("license") = "GPL";
