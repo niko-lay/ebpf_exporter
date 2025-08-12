@@ -380,16 +380,18 @@ jobs:
       - name: Print kernel version
         run: uname -a
 
-      - name: Install dependencies for ceph fs exporter
+      - name: Install dependencies for fs exporters
         run: |
           sudo apt update
-          sudo apt install -y ceph-common
+          sudo apt install -y ceph-common nfs-common
 
         # Some programs expect to attach to symbols in modules
       - name: Load expected kernel modules
         run: |
           sudo modprobe xfs
           sudo modprobe ceph
+          sudo modprobe nfsv3
+          sudo modprobe nfsv4
 
       - name: Run configuration check
         run: make config-check
