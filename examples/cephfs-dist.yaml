@@ -18,6 +18,8 @@ metrics:
                 2: mkdir
                 3: unlink
                 4: fsync
+                5: rename
+                6: getattr
         - name: bucket
           size: 1
           decoders:

@@ -13,6 +13,8 @@ enum fs_file_op {
     F_MKDIR,
     F_UNLINK,
     F_FSYNC,
+    F_RENAME,
+    F_GETATTR,
 
     F_MAX
 };
@@ -129,6 +131,32 @@ SEC("kretprobe/ceph_fsync")
 int cephfs_fsync_exit()
 {
     return probe_return(F_FSYNC);
+}
+
+// kprobe:ceph_rename
+SEC("kprobe/ceph_rename")
+int cephfs_rename_enter()
+{
+    return probe_entry();
+}
+
+SEC("kretprobe/ceph_rename")
+int cephfs_rename_exit()
+{
+    return probe_return(F_RENAME);
+}
+
+// kprobe:ceph_getattr"
+SEC("kprobe/ceph_getattr")
+int cephfs_getattr_enter()
+{
+    return probe_entry();
+}
+
+SEC("kretprobe/ceph_getattr")
+int cephfs_getattr_exit()
+{
+    return probe_return(F_GETATTR);
 }
 
 char LICENSE[] SEC("license") = "GPL";
